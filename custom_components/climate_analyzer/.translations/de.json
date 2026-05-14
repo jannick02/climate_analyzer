@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Klima Analyse Raum konfigurieren",
+        "description": "Gib den Namen des Raums und die entsprechenden Sensoren an, um die Analyse zu starten.",
+        "data": {
+          "room_name": "Name des Raums (z.B. Wohnzimmer)",
+          "temp_in": "Sensor: Temperatur Innen",
+          "hum_in": "Sensor: Luftfeuchtigkeit Innen",
+          "temp_out": "Sensor: Temperatur Außen",
+          "hum_out": "Sensor: Luftfeuchtigkeit Außen",
+          "window_sensor": "Sensor: Fensterkontakt (binary_sensor)"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Dieser Raum ist bereits konfiguriert."
+    }
+  },
+  "title": "Klima Analyse"
+}
