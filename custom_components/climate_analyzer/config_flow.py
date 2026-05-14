@@ -1,6 +1,7 @@
 import voluptuous as vol
 from homeassistant import config_entries
-from .const import DOMAIN, CONF_ROOM_NAME
+from homeassistant.helpers import selector
+from .const import DOMAIN, CONF_ROOM_NAME, CONF_TEMP_IN, CONF_HUM_IN, CONF_TEMP_OUT, CONF_HUM_OUT, CONF_WINDOW_SENSOR
 
 class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     async def async_step_user(self, user_input=None):
@@ -11,10 +12,25 @@ class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=vol.Schema({
                 vol.Required(CONF_ROOM_NAME): str,
-                vol.Required("temp_in"): str,
-                vol.Required("hum_in"): str,
-                vol.Required("temp_out"): str,
-                vol.Required("hum_out"): str,
-                vol.Required("window_sensor"): str,
+                # Selektor für den Innentemperatur-Sensor
+                vol.Required("temp_in"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor", device_class="temperature")
+                ),
+                # Selektor für Luftfeuchtigkeit Innen
+                vol.Required("hum_in"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor", device_class="humidity")
+                ),
+                # Selektor für Außentemperatur
+                vol.Required("temp_out"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor", device_class="temperature")
+                ),
+                # Selektor für Luftfeuchtigkeit Außen
+                vol.Required("hum_out"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="sensor", device_class="humidity")
+                ),
+                # Selektor für den Fensterkontakt
+                vol.Required("window_sensor"): selector.EntitySelector(
+                    selector.EntitySelectorConfig(domain="binary_sensor", device_class="window")
+                ),
             })
         )
