@@ -1,0 +1,7 @@
+DOMAIN = "climate_analyzer"
+CONF_TEMP_IN = "temp_in"
+CONF_HUM_IN = "hum_in"
+CONF_TEMP_OUT = "temp_out"
+CONF_HUM_OUT = "hum_out"
+CONF_WINDOW_SENSOR = "window_sensor"
+CONF_ROOM_NAME = "room_name"
