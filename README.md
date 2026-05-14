@@ -3,8 +3,8 @@ Erhalte einen Klima Score Basierend auf deinen Sensor Werten
 # 🏠 Climate Analyzer für Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
-![Version](https://img.shields.io/github/v/release/DEIN_GITHUB_NAME/climate_analyzer)
-![License](https://img.shields.io/github/license/DEIN_GITHUB_NAME/climate_analyzer)
+![Version](https://img.shields.io/github/v/release/jannick02/climate_analyzer)
+![License](https://img.shields.io/github/license/jannick02/climate_analyzer)
 
 Diese Integration hilft dir, dein Raumklima intelligent zu analysieren. Basierend auf der Innen- und Außentemperatur sowie der Luftfeuchtigkeit berechnet sie die **absolute Feuchtigkeit** und gibt präzise Empfehlungen, ob ein Fenster geöffnet oder geschlossen werden sollte, um Schimmel zu vermeiden oder die Temperatur zu optimieren.
 
@@ -14,7 +14,7 @@ Diese Integration hilft dir, dein Raumklima intelligent zu analysieren. Basieren
 - **Klima-Score:** Ein Wert von 0 bis 100, der angibt, wie nah der Raum am Idealwert (Bsp.: 21°C, 9g/m³ absolute Feuchte) liegt.
 - **Absolute Feuchtigkeit:** Separate Sensoren für Innen und Außen (g/m³).
 - **Temperatur-Delta:** Zeigt die Differenz zwischen Außen- und Innentemperatur auf einen Blick.
-- **Multi-Raum-Support:** Erstelle pro Raum ein eigenes Gerät mit individuellen Sensoren.
+- **Multi-Raum-Support:** Erstelle pro Raum ein Sensor mit individuellen Attributen.
 
 ## 🚀 Installation
 
@@ -46,15 +46,17 @@ Nach dem Neustart kannst du die Integration ganz einfach über die Benutzeroberf
 
 ## 📊 Sensoren & Logik
 
-Die Integration erstellt pro konfiguriertem Raum ein Gerät mit folgenden Entitäten:
+Die Integration erstellt pro konfiguriertem Raum eine Entität mit folgenden Attributen:
 
-| Sensor | Beschreibung |
+| Sensor/Attribute | Beschreibung |
 | :--- | :--- |
-| `sensor.klima_analyse_[raum]` | Die Hauptempfehlung (Fenster auf/zu) |
-| `sensor.klima_score_[raum]` | Bewertung der Luftqualität in % |
-| `sensor.abs_feuchte_indoor_[raum]` | Absolute Feuchtigkeit Innen in g/m³ |
-| `sensor.abs_feuchte_outdoor` | Absolute Feuchtigkeit Außen in g/m³ |
-| `sensor.temp_delta_[raum]` | Differenz Außen- zu Innentemperatur |
+| `sensor.klima_analyse_[raum]_status` | Die Hauptempfehlung (Fenster auf/zu) |
+| `attr.score` | Bewertung der Luftqualität (0-100) |
+| `attr.absolute_humidity_in` | Absolute Feuchtigkeit Innen in g/m³ |
+| `attr.absolute_humidity_out` | Absolute Feuchtigkeit Außen in g/m³ |
+| `attr.temp_delta` | Differenz Außen- zu Innentemperatur |
+| `attr.window_open` | true/false |
+
 
 ### Die Logik hinter dem Score
 Der Score startet bei 100 Punkten. Abzüge gibt es für:
