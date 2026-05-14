@@ -14,23 +14,23 @@ class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 vol.Required(CONF_ROOM_NAME): str,
                 # Selektor für den Innentemperatur-Sensor
                 vol.Required("temp_in"): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor", device_class="temperature")
+                    selector.EntitySelectorConfig(domain="sensor")
                 ),
                 # Selektor für Luftfeuchtigkeit Innen
                 vol.Required("hum_in"): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor", device_class="humidity")
+                    selector.EntitySelectorConfig(domain="sensor")
                 ),
                 # Selektor für Außentemperatur
                 vol.Required("temp_out"): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor", device_class="temperature")
+                    selector.EntitySelectorConfig(domain="sensor")
                 ),
                 # Selektor für Luftfeuchtigkeit Außen
                 vol.Required("hum_out"): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor", device_class="humidity")
+                    selector.EntitySelectorConfig(domain="sensor")
                 ),
                 # Selektor für den Fensterkontakt
                 vol.Required("window_sensor"): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="binary_sensor", device_class="window")
+                    selector.EntitySelectorConfig(domain="binary_sensor")
                 ),
             })
         )
