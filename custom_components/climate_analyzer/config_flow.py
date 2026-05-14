@@ -47,7 +47,7 @@ class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 selector.EntitySelectorConfig(domain="sensor", device_class="humidity")
             ),
             vol.Optional(CONF_WINDOW_SENSOR): selector.EntitySelector(
-                selector.EntitySelectorConfig(domain="binary_sensor", device_class="window")
+                selector.EntitySelectorConfig(domain="binary_sensor")
             ),
         })
 
