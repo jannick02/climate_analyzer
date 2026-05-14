@@ -10,13 +10,9 @@
           "hum_in": "Sensor: Luftfeuchtigkeit Innen",
           "temp_out": "Sensor: Temperatur Außen",
           "hum_out": "Sensor: Luftfeuchtigkeit Außen",
-          "window_sensor": "Sensor: Fensterkontakt (binary_sensor)"
+          "window_sensor": "Sensor: Fensterkontakt"
         }
       }
-    },
-    "abort": {
-      "already_configured": "Dieser Raum ist bereits konfiguriert."
     }
-  },
-  "title": "Klima Analyse"
+  }
 }
