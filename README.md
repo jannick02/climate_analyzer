@@ -11,7 +11,7 @@ Diese Integration hilft dir, dein Raumklima intelligent zu analysieren. Basieren
 ## ✨ Funktionen
 
 - **Lüftungsempfehlung:** Dynamischer Status (z. B. "Fenster auf! (Entfeuchten)" oder "Fenster zu! (Hitze kommt rein)").
-- **Klima-Score:** Ein Wert von 0 bis 100%, der angibt, wie nah der Raum am Idealwert (21°C, 9g/m³ absolute Feuchte) liegt.
+- **Klima-Score:** Ein Wert von 0 bis 100, der angibt, wie nah der Raum am Idealwert (Bsp.: 21°C, 9g/m³ absolute Feuchte) liegt.
 - **Absolute Feuchtigkeit:** Separate Sensoren für Innen und Außen (g/m³).
 - **Temperatur-Delta:** Zeigt die Differenz zwischen Außen- und Innentemperatur auf einen Blick.
 - **Multi-Raum-Support:** Erstelle pro Raum ein eigenes Gerät mit individuellen Sensoren.
@@ -53,13 +53,13 @@ Die Integration erstellt pro konfiguriertem Raum ein Gerät mit folgenden Entit�
 | `sensor.klima_analyse_[raum]` | Die Hauptempfehlung (Fenster auf/zu) |
 | `sensor.klima_score_[raum]` | Bewertung der Luftqualität in % |
 | `sensor.abs_feuchte_indoor_[raum]` | Absolute Feuchtigkeit Innen in g/m³ |
-| `sensor.abs_feuchte_outdoor_[raum]` | Absolute Feuchtigkeit Außen in g/m³ |
+| `sensor.abs_feuchte_outdoor` | Absolute Feuchtigkeit Außen in g/m³ |
 | `sensor.temp_delta_[raum]` | Differenz Außen- zu Innentemperatur |
 
 ### Die Logik hinter dem Score
 Der Score startet bei 100 Punkten. Abzüge gibt es für:
-- Abweichung von der Idealtemperatur (**21°C**)
-- Abweichung von der idealen absoluten Feuchtigkeit (**9 g/m³**)
+- Abweichung von der Idealtemperatur
+- Abweichung von der idealen absoluten Feuchtigkeit
 
 ## 🛡️ Lizenz
 
