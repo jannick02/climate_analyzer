@@ -1,0 +1,10 @@
+{
+  "domain": "climate_analyzer",
+  "name": "Climate Analyzer",
+  "codeowners": ["@jannick02"],
+  "config_flow": true,
+  "documentation": "https://github.com/jannick02/climate_analyzer",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/jannick02/climate_analyzer/issues",
+  "version": "1.0.0"
+}
