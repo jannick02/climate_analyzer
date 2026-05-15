@@ -11,7 +11,10 @@ from .const import (
     CONF_HUM_IN, 
     CONF_TEMP_OUT, 
     CONF_HUM_OUT, 
-    CONF_WINDOW_SENSOR
+    CONF_WINDOW_SENSOR,
+    CONF_IDEAL_TEMP,
+    CONF_IDEAL_ABS_HUM,
+    CONF_MAX_ABS_HUM
 )
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
@@ -19,7 +22,6 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     config = config_entry.data
     room = config.get(CONF_ROOM_NAME)
     
-    # Wir fügen nur noch EINEN Hauptsensor pro Raum hinzu
     async_add_entities([ClimateAnalyzerEntity(hass, config, room)])
 
 def calculate_abs_hum(temp, hum):
@@ -41,11 +43,10 @@ class ClimateAnalyzerEntity(SensorEntity):
         self._config = config
         self._room = room
         
-        self._attr_name = "Status" # Der Name der Entität innerhalb des Geräts
+        self._attr_name = "Status"
         self._attr_unique_id = f"climate_analyzer_{room.lower()}"
         self._attr_icon = "mdi:home-analytics"
 
-        # Gruppiert die Entität in ein "Gerät" (Device) in der Home Assistant UI
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self._attr_unique_id)},
             name=f"Klima Analyse {room}",
@@ -54,9 +55,7 @@ class ClimateAnalyzerEntity(SensorEntity):
         )
 
     async def async_added_to_hass(self):
-        """Wird aufgerufen, wenn die Entität zu Home Assistant hinzugefügt wurde.
-        Hier registrieren wir die automatischen Updates."""
-        
+        """Registriert automatische Updates bei Sensoränderungen."""
         entities_to_track = [
             self._config.get(CONF_TEMP_IN),
             self._config.get(CONF_HUM_IN),
@@ -65,12 +64,10 @@ class ClimateAnalyzerEntity(SensorEntity):
             self._config.get(CONF_WINDOW_SENSOR)
         ]
         
-        # Leere Einträge herausfiltern, falls z.B. kein Fensterkontakt definiert wurde
         entities_to_track = [e for e in entities_to_track if e is not None]
 
         @callback
         def async_update_callback(event):
-            """Wird getriggert, sobald sich ein Quellsensor ändert."""
             self.async_schedule_update_ha_state(True)
 
         self.async_on_remove(
@@ -80,7 +77,6 @@ class ClimateAnalyzerEntity(SensorEntity):
         )
 
     def _get_float_state(self, entity_id, default=0.0):
-        """Hilfsfunktion: Liest den Status sicher als Float aus und verhindert Abstürze."""
         if not entity_id:
             return default
         state = self.hass.states.get(entity_id)
@@ -92,7 +88,6 @@ class ClimateAnalyzerEntity(SensorEntity):
         return default
 
     def _get_window_state(self):
-        """Hilfsfunktion: Prüft, ob das Fenster offen ist."""
         entity_id = self._config.get(CONF_WINDOW_SENSOR)
         if not entity_id:
             return False
@@ -111,8 +106,9 @@ class ClimateAnalyzerEntity(SensorEntity):
         abs_in = calculate_abs_hum(t_in, h_in)
         abs_out = calculate_abs_hum(t_out, h_out)
         
-        temp_comfort = 22.0
-        hum_max = 12.0
+        # Konfigurierte Idealwerte abrufen (mit Fallback auf Standard)
+        temp_comfort = float(self._config.get(CONF_IDEAL_TEMP, 21.0))
+        hum_max = float(self._config.get(CONF_MAX_ABS_HUM, 12.0))
 
         if win:
             if t_out > t_in and t_in > temp_comfort: return "Fenster zu! (Hitze)"
@@ -134,9 +130,13 @@ class ClimateAnalyzerEntity(SensorEntity):
         abs_in = calculate_abs_hum(t_in, h_in)
         abs_out = calculate_abs_hum(t_out, h_out)
 
-        # Score Berechnung
-        t_pen = abs(t_in - 21) * 6
-        h_pen = abs(abs_in - 9) * 9
+        # Konfigurierte Idealwerte für die Score-Berechnung
+        temp_comfort = float(self._config.get(CONF_IDEAL_TEMP, 21.0))
+        ideal_abs = float(self._config.get(CONF_IDEAL_ABS_HUM, 9.0))
+
+        # Score Berechnung (jetzt dynamisch basierend auf den eigenen Idealwerten)
+        t_pen = abs(t_in - temp_comfort) * 6
+        h_pen = abs(abs_in - ideal_abs) * 9
         score = max(0, round(100 - t_pen - h_pen))
 
         # Delta Berechnung
@@ -150,5 +150,8 @@ class ClimateAnalyzerEntity(SensorEntity):
             "absolute_humidity_unit": "g/m³",
             "temp_delta": delta,
             "temp_delta_unit": "°C",
-            "window_open": self._get_window_state()
+            "window_open": self._get_window_state(),
+            "configured_ideal_temp": temp_comfort,
+            "configured_ideal_abs_hum": ideal_abs,
+            "configured_max_abs_hum": hum_max
         }
