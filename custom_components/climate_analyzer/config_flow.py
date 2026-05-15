@@ -8,7 +8,10 @@ from .const import (
     CONF_HUM_IN, 
     CONF_TEMP_OUT, 
     CONF_HUM_OUT, 
-    CONF_WINDOW_SENSOR
+    CONF_WINDOW_SENSOR,
+    CONF_IDEAL_TEMP,
+    CONF_IDEAL_ABS_HUM,
+    CONF_MAX_ABS_HUM
 )
 
 class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -31,7 +34,6 @@ class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
 
         # Definition des Eingabe-Schemas für den Dialog
-        # Die Keys hier (z.B. CONF_TEMP_IN) müssen exakt mit den Keys in der strings.json übereinstimmen
         data_schema = vol.Schema({
             vol.Required(CONF_ROOM_NAME): str,
             vol.Required(CONF_TEMP_IN): selector.EntitySelector(
@@ -48,6 +50,16 @@ class ClimateAnalyzerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             ),
             vol.Optional(CONF_WINDOW_SENSOR): selector.EntitySelector(
                 selector.EntitySelectorConfig(domain="binary_sensor")
+            ),
+            # Neue Felder für die Idealwerte mit Standardwerten
+            vol.Required(CONF_IDEAL_TEMP, default=21.0): selector.NumberSelector(
+                selector.NumberSelectorConfig(mode="box", step=0.5, unit_of_measurement="°C")
+            ),
+            vol.Required(CONF_IDEAL_ABS_HUM, default=9.0): selector.NumberSelector(
+                selector.NumberSelectorConfig(mode="box", step=0.1, unit_of_measurement="g/m³")
+            ),
+            vol.Required(CONF_MAX_ABS_HUM, default=12.0): selector.NumberSelector(
+                selector.NumberSelectorConfig(mode="box", step=0.1, unit_of_measurement="g/m³")
             ),
         })
 
