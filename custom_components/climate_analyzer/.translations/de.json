@@ -3,14 +3,17 @@
     "step": {
       "user": {
         "title": "Klima Analyse Raum konfigurieren",
-        "description": "Gib den Namen des Raums und die entsprechenden Sensoren an, um die Analyse zu starten.",
+        "description": "Gib den Namen des Raums, die Sensoren und deine gewünschten Idealwerte an.",
         "data": {
           "room_name": "Name des Raums (z.B. Wohnzimmer)",
           "temp_in": "Sensor: Temperatur Innen",
           "hum_in": "Sensor: Luftfeuchtigkeit Innen",
           "temp_out": "Sensor: Temperatur Außen",
           "hum_out": "Sensor: Luftfeuchtigkeit Außen",
-          "window_sensor": "Sensor: Fensterkontakt (binary_sensor)"
+          "window_sensor": "Sensor: Fensterkontakt (optional)",
+          "ideal_temp": "Wohlfühltemperatur (°C)",
+          "ideal_abs_hum": "Ideale abs. Feuchtigkeit (g/m³ - für 100% Score)",
+          "max_abs_hum": "Max. abs. Feuchtigkeit (g/m³ - Schwellenwert für Warnung)"
         }
       }
     },
